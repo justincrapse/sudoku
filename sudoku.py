@@ -1,4 +1,7 @@
+
 """
+This was done before a deep overhaul of my Python skills. I might go through and shorten this significantly. 
+
 SUDOKU PROBLEM:
 0 = blank
 605 708 291
