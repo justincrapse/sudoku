@@ -13,6 +13,10 @@ puzzle = [[0, 5, 0, 0, 0, 4, 0, 3, 9],
 
 
 def fetch_section_values(row_set, col_set):
+    """
+    this code is redundant, but I'm not sure how to pull it out of where it currently lies below.
+    Purhaps a new approach to the problem would simplify the solution
+    """
     new_section = []
     for row, col in zip([i for i in range(row_set, 3 + row_set) for _ in range(3)],
                         [i for i in range(col_set, 3 + col_set)] * 3):
@@ -26,6 +30,7 @@ def solve_sudoku(puzzle):
     section_values = defaultdict(list)
     solve_list = []
 
+    # set initial section values and set the solve_list (every row, column position needing resolution)
     for row_set in range(0, 7, 3):
         for col_set in range(0, 7, 3):
             for row, col in zip([i for i in range(row_set, 3 + row_set) for _ in range(3)],
@@ -36,11 +41,9 @@ def solve_sudoku(puzzle):
                 else:
                     solve_list.append({'row': row, 'col': col, 'sec': (row_set, col_set)})
 
-    finished = False
     entry = 0
     first_guess = True
-
-    while not finished:
+    while len(solve_list) != entry:
         rows = puzzle
         columns = list(zip(*puzzle))
         row = solve_list[entry]['row']
@@ -59,6 +62,7 @@ def solve_sudoku(puzzle):
                 first_guess = False
                 continue
 
+        # this is if first_guess == false and entry has ran out of possible values
         if solve_list[entry]['possible_values']:
             solve_list[entry]['current_value'] = solve_list[entry]['possible_values'].pop()
         else:
@@ -72,8 +76,6 @@ def solve_sudoku(puzzle):
         section_values[solve_list[entry]['sec']] = fetch_section_values(*solve_list[entry]['sec'])
         first_guess = True
         entry += 1
-        if len(solve_list) == entry:
-            finished = True
 
     return puzzle
 
